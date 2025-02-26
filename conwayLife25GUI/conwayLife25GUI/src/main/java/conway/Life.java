@@ -1,5 +1,6 @@
 package conway;
 
+import conway.model.Grid;
 
 /*
  * Il core di game of life
@@ -8,128 +9,64 @@ package conway;
  */
 
 public class Life {
-    //La struttura
-    private int rows=0;
-    private int cols=0;
-    private static int[][] grid;
-    private static int[][] nextGrid;
- 
-    public Life( int rowsNum, int colsNum ) {
-        this.rows   = rowsNum;
-        this.cols   = colsNum;
-        createGrids();   //crea la struttura a griglia
-    }
-
-    public int getRowsNum(){
-        return rows;
-    }
-    public int getColsNum(){
-        return cols;
-    }
-
-    protected void  createGrids() {
-        grid     = new int[rows][cols];
-        nextGrid = new int[rows][cols];   
-        //CommUtils.outyellow("Life | initializeGrids done");
-    }
-
-    protected void resetGrids() {
-         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j]     = 0;
-                //setCellState(   i,   j, false );
-                //outdev.setCellColor(  i,  j, grid[i][j] );
-                nextGrid[i][j] = 0;
+        private final int rows, cols;
+        private Grid currentGrid;
+        private Grid nextGrid;
+    
+        public Life(int rows, int cols) {
+            this.rows = rows;
+            this.cols = cols;
+            this.currentGrid = new Grid(rows, cols);
+            this.nextGrid = new Grid(rows, cols);
+        }
+    
+        protected void resetGrids() {
+            currentGrid.resetGrids();
+            nextGrid.resetGrids();
+        }
+    
+        protected void computeNextGen(IOutDev outdev) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    applyRules(i, j);
+                    outdev.displayCell(currentGrid.getCell(i, j).isAlive() ? "O" : ".");
+                }
+                outdev.displayCell("\n");
+            }
+            copyAndResetGrid();
+            outdev.displayCell("\n");
+        }
+    
+        protected void copyAndResetGrid() {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    currentGrid.setCellState(i, j, nextGrid.getCell(i, j).isAlive());
+                    nextGrid.setCellState(i, j, false);
+                }
             }
         }
-        //CommUtils.outyellow("Life | initGrids done");
-    }
+    
+        protected void applyRules(int row, int col) {
+            int numNeighbors = currentGrid.getCellNeighbors(row, col);
+            boolean isAlive = currentGrid.getCell(row, col).isAlive();
+            boolean newState = isAlive ? (numNeighbors == 2 || numNeighbors == 3) : (numNeighbors == 3);
+            nextGrid.setCellState(row, col, newState);
+        }
+    
+        public void switchCellState(int i, int j) {
+            boolean currentState = currentGrid.getCell(i, j).isAlive();
+            currentGrid.setCellState(i, j, !currentState);
+        }
+    
+        public boolean getCellState(int i, int j) {
+            return currentGrid.getCell(i, j).isAlive();
+               }       
 
-
-    protected int countNeighborsLive(int row, int col) {
-        int count = 0;
-        if (row-1 >= 0) {
-            if (grid[row-1][col] == 1) count++;
-        }
-        if (row-1 >= 0 && col-1 >= 0) {
-            if (grid[row-1][col-1] == 1) count++;
-        }
-        if (row-1 >= 0 && col+1 < cols) {
-            if (grid[row-1][col+1] == 1) count++;
-        }
-        if (col-1 >= 0) {
-            if (grid[row][col-1] == 1) count++;
-        }
-        if (col+1 < cols) {
-            if (grid[row][col+1] == 1) count++;
-        }
-        if (row+1 < rows) {
-            if (grid[row+1][col] == 1) count++;
-        }
-        if (row+1 < rows && col-1 >= 0) {
-            if (grid[row+1][col-1] == 1) count++;
-        }
-        if (row+1 < rows && col+1 < cols) {
-            if (grid[row+1][col+1] == 1) count++;
-        }
-        return count;
-    }
-
-
-
-    protected void computeNextGen( IOutDev outdev ) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                int n = countNeighborsLive(i,j);
-                applyRules(i, j, n);
-                outdev.displayCell( ""+grid[i][j] );
+               public int getRows() {
+                return rows;
             }
-            outdev.displayCell("\n");  //Va tolta nel caso della GUI?
-        }
-        copyAndResetGrid( outdev );
-        outdev.displayCell("\n");
-    }
-
-    protected void copyAndResetGrid( IOutDev outdev ) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j] = nextGrid[i][j];
-                //outdev.displayCell( ""+grid[i][j] );
-                nextGrid[i][j] = 0;
+            
+            public int getCols() {
+                return cols;
             }
-        }
-    }
-
-    protected void applyRules(int row, int col, int numNeighbors) {
-        //int numNeighbors = countNeighborsLive(row, col);
-        //CELLA VIVA
-        if (grid[row][col] == 1) {
-            if (numNeighbors < 2) { //muore per isolamento
-                nextGrid[row][col] = 0;
-            } else if (numNeighbors == 2 || numNeighbors == 3) { //sopravvive
-                nextGrid[row][col] = 1;
-            } else if (numNeighbors > 3) { //muore per sovrappopolazione
-                nextGrid[row][col] = 0;
-            }
-        }
-        //CELLA MORTA
-        else if (grid[row][col] == 0) {
-            if (numNeighbors == 3) { //riproduzione
-                nextGrid[row][col] = 1;
-            }
-        }
-        //CommUtils.outgreen("Life applyRules " + nextGrid   );
-    }
-
-    public void switchCellState(int i, int j){
-        if( grid[i][j] == 0) grid[i][j] = 1;       
-        else if( grid[i][j] == 1) grid[i][j] = 0;  
-    }
-
-    public  int getCellState( int i, int j  ) {
-        return   grid[i][j];
-    }
- 
-
-
 }

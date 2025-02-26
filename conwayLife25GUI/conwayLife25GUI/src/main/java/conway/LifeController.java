@@ -1,57 +1,53 @@
 package conway;
 import java.util.concurrent.TimeUnit;
+
 import conway.devices.ConwayOutput;
 
 public class LifeController {
-    private int generationTime = 1000;
-    private  Life life;
+    private static final int DEFAULT_GENERATION_TIME = 1000;
+    private final Life life;
     private IOutDev outdev;
+    private final int generationTime;
 
-    public LifeController(Life game){  
+    public LifeController(Life game) {  
+        this(game, DEFAULT_GENERATION_TIME);
+    }
+
+    public LifeController(Life game, int generationTime) {  
         this.life = game;
-        configureTheSystem();
-     }
+        this.generationTime = generationTime;
+        this.outdev = new ConwayOutput();      
+    }
 
-    protected void configureTheSystem() {
-		//CommUtils.outyellow("LifeController | doJob ");
-		life.createGrids();
-        outdev = new ConwayOutput(   );		
+	protected void configureTheSystem() {
+        outdev = new ConwayOutput();      
     }
     
-    //Called by ConwayInputMock
-    public void start(){
-		System.out.println("---------Initial----------");
-		//La griglia è visualizzata con un ciclo
-		displayGrid();
-		play(); 		   	
+    public void start() {
+        System.out.println("---------Initial----------");
+        displayGrid();
+        play();         
     }
     
-    protected void play() {
-		//while (true) {
-		for( int i=1;i<=5;i++){
-			try {
-				TimeUnit.MILLISECONDS.sleep(generationTime);
-				System.out.println("---------Epoch --- "+i );
-				life.computeNextGen( outdev );
-				//La griglia è visualizzata  'on the fly'
-				//displayGrid();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}    	
+    private void play() {
+        for (int i = 1; i <= 5; i++) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(generationTime);
+                System.out.println("--------- Generation " + i + " ---------");
+                life.computeNextGen(outdev);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread interrupted: " + e.getMessage());
+            }
+        }    	
     }
 
-	public void displayGrid() {
-		for (int i = 0; i < life.getRowsNum(); i++) {
-			for (int j = 0; j < life.getColsNum(); j++) {
-				if (life.getCellState(i,j) == 0) {
-					outdev.displayCell("0");
-                } else {
-                	outdev.displayCell("1");
-                }				 
-			}
-			outdev.displayCell("\n");
-		}
-	}
-
+    public void displayGrid() {
+        for (int i = 0; i < life.getRows(); i++) {
+            for (int j = 0; j < life.getCols(); j++) {
+                outdev.displayCell(life.getCellState(i, j) ? "1" : "0");
+            }
+            outdev.displayCell("\n");
+        }
+    }
 }
