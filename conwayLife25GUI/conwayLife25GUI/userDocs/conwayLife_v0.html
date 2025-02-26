@@ -245,7 +245,7 @@ div.imagedesc{
 
  
 <div class="remark">
-Sviluppare una GUI per il gioco ConwayLife25
+	realizzazione di una pagina HTML che funga da dispostivo di input-ouput evoluto per l&apos;applicazione ConwayLife25 in Java .
 </div>
 
  
@@ -257,11 +257,11 @@ Da una prima analisi della versione JAVA del gioco, sono emersi i seguenti requi
  <br>- Java versione 17
  <br>- liberia Junit 4.13.2 
  <br>- Gradle per gestione progetto 
- <br> - hamcrest core 1.3
+ <br>- hamcrest core 1.3
+ <br>- SpringBoot o framework equivalente per gestione partite sulla rete.
  <br>
-I requisiti sopra servono per garantire il corretto funzionamento del gioco nella versione CLI.
-<br> Per sviluppare un'interfaccia grafica sorge inotlre la necessità di utilizzare un framework apposito:
-<br> Ho scelto di utilizzare il framework Swing perchè è ampiamente sufficiente per i fini di questo progetto e di facile implementazione.
+<br> Per sviluppare un'interfaccia grafica su pagina HTML sorge inotlre la necessità di utilizzare un framework apposito:
+<br> Ho scelto di utilizzare SpringBoot (su suggerimento del docente) perchè è ampiamente sufficiente per i fini di questo progetto e di facile implementazione.
 </div>
  
 </div>
@@ -273,6 +273,8 @@ Un'interfaccia grafica per questo progetto richiede diversi componenti grafici, 
 - Una griglia NxN con N intero definito a compile time. L'utente dovrà selezionare sulla griglia gli elementi su cui avviare la simulazione. <br>
 - Bottone "start" per avviare la simulazione <br>
 - Bottone "clear" per interrompere la simulazione e pulire la griglia <br>
+- Bottone "stop" per interrompere la simulazione <br>
+- Oggetti griglia e cella che siano definiti e serviti all'utente per una visualizzazione efficace anche da remoto. <br>
 L'interfaccia grafica deve essere perciò 2D e leggera. 
 L'uso di un pattern di tipo MVC potrebbe semplificare la gestione dell'interfaccia grafica, delegando al controller il compito di validare gli input.<br>
 Ciò comporta l'aggiornamento prima del modello (sempre verificato dal controller), e in seguito della view (che rispecchierà il modello).
@@ -286,12 +288,12 @@ Ciò comporta l'aggiornamento prima del modello (sempre verificato dal controlle
 <div class="remark">
  Al momento ho identificato 3 sprint: <br>
  - 1 - Analisi del codice fornito relativo alla versione CLI, preparazione dell'ambiente locale e Version Control su GitHub. <br>
- - 2 - Implementazione dell'interfaccia grafica <br>
+ - 2 - Refactor del codice e Implementazione dell'interfaccia grafica <br>
  - 3 - Testing, debugging e rifiniture per migliorare l'esperienza utente <br>
 
  Tempo stimato: <br>
  Sprint 1 - 2 ore<br>
- Sprint 2 - 10 ore<br>
+ Sprint 2 - 15 ore<br>
  Sprint 3 - 5 ore<br>
 
  Tempo effettivo: <br>
