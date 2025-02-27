@@ -29,7 +29,7 @@ public class Life {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
                     applyRules(i, j);
-                    outdev.displayCell(currentGrid.getCell(i, j).isAlive() ? "O" : ".");
+                    outdev.displayCell(currentGrid.getCell(i, j).isAlive() ? "1" : "0");
                 }
                 outdev.displayCell("\n");
             }
@@ -68,5 +68,13 @@ public class Life {
             
             public int getCols() {
                 return cols;
+            }
+
+            public Grid getCurrentGrid() {
+                return currentGrid;
+            }
+
+            public Grid getNextGrid() {
+                return nextGrid;
             }
 }

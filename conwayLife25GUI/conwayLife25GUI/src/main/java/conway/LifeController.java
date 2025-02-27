@@ -50,4 +50,8 @@ public class LifeController {
             outdev.displayCell("\n");
         }
     }
+
+    public Life getLife() {
+        return life;
+    }
 }
