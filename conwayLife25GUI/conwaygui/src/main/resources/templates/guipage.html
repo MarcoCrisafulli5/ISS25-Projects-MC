@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Welcome</title></head>
+    <link rel="stylesheet" href="mapstyle.css">
+    <script src="commsocket.js"></script>
+    <script src="outarea.js"></script>
+<body>
+  <h1>Welcome to the conwaygui</h1>
+  <p>Application name=
+    <b><span th:text="${arg}">Still unknown</span></b>.</p>
+<hr/>
+
+<!--  INPUT AREA-->
+  <button onClick="sendCmdToServer('start'); return false">START</button>
+  <button onClick="sendCmdToServer('stop');  return false">STOP</button>
+  <button onClick="sendCmdToServer('clear'); return false">CLEAR</button>
+  <button onClick="sendCmdToServer('exit');  return false">EXIT</button>
+
+<!--  OUTPUT AREA -->
+  <ol id="msgslist"></ol>
+
+<!-- MAP AREA -->
+    <div >
+      <h3 class="text-center">Life Grid Map - starts in (1,1)</h3>
+      <div id="map" class="grid"></div>
+    </div>
+
+<script src="buttoninput.js"></script>
+<script src="iomap.js"></script>
+</body>
+</html>
