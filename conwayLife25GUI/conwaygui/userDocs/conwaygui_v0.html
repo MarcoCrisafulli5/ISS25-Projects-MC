@@ -268,11 +268,17 @@ Sviluppare una GUI per il gioco ConwayLife25 mediante una pagina HTML.
 </div>
 
 <h2>Test plans</h2> 
-
+<div class="remark">
+	-Test locali per business logic hanno successo.
+	-Necessità di implementare test con messaggi da client fittizio per testare solidità del sistema MVC	
+</div>
 
 <h2>Project</h2> 
 <div class="remark">
-	03/03/25 - Adattamento business logic sviluppata per versione locale al progetto SpringBoot, aggiunta di metodi per chiamate a metodi protected in Life.java. 
+	Il progetto sarà basato sull'adattamento della business logic sviluppata per versione locale al progetto SpringBoot.
+	Modello di progetto basato su MVC.
+	Implementato controller e WebSocket per comunicazione asincrona e aggiornamento della grid del gioco.
+	Tutte le comunicazioni sono effettuate tramite WebSocket al controller e in seguito i cambiamenti verrrano riflessi sul modello e rimandati alla view.
 </div>
  
 

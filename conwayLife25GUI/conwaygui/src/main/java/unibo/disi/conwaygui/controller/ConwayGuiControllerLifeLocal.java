@@ -53,7 +53,7 @@ public class ConwayGuiControllerLifeLocal {
 		//ModelAndView modelAndView = new ModelAndView();
 	    //modelAndView.setViewName("guipage"); 
 		if( ! started ) {
-			life.callProtectedMethodResetGrids();
+			life.resetGrids();
 			model.addAttribute("arg", appName );
 			started = true;
 		}

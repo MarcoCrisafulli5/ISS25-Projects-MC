@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Welcome</title></head>
     <link rel="stylesheet" href="mapstyle.css">
-    <script src="commsocket.js"></script>
-    <script src="outarea.js"></script>
+    <script th:src="@{/js/commsocket.js}"></script>
+    <script th:src="@{/js/outarea.js}"></script>
 <body>
   <h1>Welcome to the conwaygui</h1>
   <p>Application name=
@@ -25,7 +25,7 @@
       <div id="map" class="grid"></div>
     </div>
 
-<script src="buttoninput.js"></script>
-<script src="iomap.js"></script>
+<script th:src="@{/js/buttoninput.js}"></script>
+<script th:src="@{/js/iomap.js}"></script>
 </body>
 </html>
